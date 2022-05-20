@@ -4,14 +4,12 @@ package(default_visibility = [
     ":context_stack_packages",
     "//tensorflow_federated/experimental/python/core/impl/jax_context:jax_context_packages",
     "//tensorflow_federated/python/core/impl:impl_visibility",
-    "//tensorflow_federated/python/core/impl/compiler:compiler_packages",
     "//tensorflow_federated/python/core/impl/computation:computation_packages",
     "//tensorflow_federated/python/core/impl/execution_contexts:execution_contexts_packages",
     "//tensorflow_federated/python/core/impl/executor_stacks:executor_stacks_packages",
     "//tensorflow_federated/python/core/impl/executors:executors_packages",
     "//tensorflow_federated/python/core/impl/federated_context:federated_context_packages",
     "//tensorflow_federated/python/core/impl/tensorflow_context:tensorflow_context_packages",
-    "//tensorflow_federated/python/core/impl/wrappers:wrappers_packages",
     "//tensorflow_federated/python/core/impl/xla_context:xla_context_packages",
 ])
 

@@ -15,9 +15,9 @@
 
 from tensorflow_federated.experimental.python.core.impl.jax_context import jax_serialization
 from tensorflow_federated.python.core.impl.computation import computation_impl
+from tensorflow_federated.python.core.impl.computation import computation_wrapper
 from tensorflow_federated.python.core.impl.computation import function_utils
 from tensorflow_federated.python.core.impl.context_stack import context_stack_impl
-from tensorflow_federated.python.core.impl.wrappers import computation_wrapper
 
 
 def _jax_strategy_fn(fn_to_wrap, fn_name, parameter_type, unpack):
@@ -46,8 +46,8 @@ def _jax_strategy_fn(fn_to_wrap, fn_name, parameter_type, unpack):
   return computation_impl.ConcreteComputation(comp_pb, ctx_stack)
 
 
-jax_wrapper = computation_wrapper.ComputationWrapper(_jax_strategy_fn)
-jax_wrapper.__doc__ = (
+jax_computation = computation_wrapper.ComputationWrapper(_jax_strategy_fn)
+jax_computation.__doc__ = (
     """Decorates/wraps Python functions containing JAX code as TFF computations.
 
   This wrapper can be used in a similar manner to `tff.tf_computation`, with

@@ -6,7 +6,6 @@ package(default_visibility = [
     "//tensorflow_federated/python/core/impl/execution_contexts:execution_contexts_packages",
     "//tensorflow_federated/python/core/impl/executor_stacks:executor_stacks_packages",
     "//tensorflow_federated/python/core/impl/executors:executors_packages",
-    "//tensorflow_federated/python/core/impl/wrappers:wrappers_packages",
 ])
 
 package_group(
@@ -44,6 +43,44 @@ py_test(
         ":data",
         ":value_impl",
         "//tensorflow_federated/python/core/impl/compiler:building_blocks",
+        "//tensorflow_federated/python/core/impl/types:computation_types",
+        "@absl_py//absl/testing:absltest",
+        "@org_tensorflow//tensorflow:tensorflow_py",
+    ],
+)
+
+py_library(
+    name = "federated_computation",
+    srcs = ["federated_computation.py"],
+    srcs_version = "PY3",
+    deps = [
+        "//tensorflow_federated/python/core/impl/computation:computation_impl",
+        "//tensorflow_federated/python/core/impl/computation:computation_wrapper",
+        "//tensorflow_federated/python/core/impl/context_stack:context_stack_impl",
+        "//tensorflow_federated/python/core/impl/federated_context:federated_computation_utils",
+    ],
+)
+
+py_test(
+    name = "federated_computation_test",
+    size = "small",
+    srcs = ["federated_computation_test.py"],
+    args = [
+        "--golden",
+        "$(location federated_computation_test_goldens/federated_computation_traceback.expected)",
+    ],
+    data = [
+        "federated_computation_test_goldens/federated_computation_traceback.expected",
+    ],
+    python_version = "PY3",
+    srcs_version = "PY3",
+    deps = [
+        ":federated_computation",
+        "//tensorflow_federated/python/common_libs:golden",
+        "//tensorflow_federated/python/core/impl/computation:computation_impl",
+        "//tensorflow_federated/python/core/impl/computation:computation_wrapper",
+        "//tensorflow_federated/python/core/impl/context_stack:get_context_stack",
+        "//tensorflow_federated/python/core/impl/context_stack:runtime_error_context",
         "//tensorflow_federated/python/core/impl/types:computation_types",
         "@absl_py//absl/testing:absltest",
         "@org_tensorflow//tensorflow:tensorflow_py",
