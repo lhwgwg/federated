@@ -117,6 +117,14 @@ const AcceleratorDevices& GetAcceleratorDevices() {
 void SetDevice(absl::string_view device, tensorflow::GraphDef* graph_def,
                const char* device_type) {
   for (tensorflow::NodeDef& node_pb : *graph_def->mutable_node()) {
+    // Annotating ReduceDataset with _xla_compile_device_type will denote to
+    // Tensorflow to decompose the op into dataset iteration and reduce_fn and
+    // compile the reduce_fn. Currently only supported for TPU with support for
+    // CPU/GPU in future.
+    if (node_pb.op() == "ReduceDataset" &&
+        !(strcmp(device_type, tensorflow::DEVICE_TPU))) {
+      (*node_pb.mutable_attr())["_xla_compile_device_type"].set_s(device_type);
+    }
     if (!node_pb.device().empty()) {
       VLOG(5) << "Skipping already placed node [" << node_pb.name() << "] ("
               << node_pb.op() << ") on " << node_pb.device();
